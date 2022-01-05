@@ -22,7 +22,8 @@ jobs:
           username: ${{ github.actor }} 
           password: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
-            GIT_AUTH_TOKEN=${{ github.token }}
+            GITHUB_TOKEN=${{ github.token }}
+
       - name: Checkout project
         uses: actions/checkout@v2
 
@@ -42,5 +43,5 @@ jobs:
           docker buildx build \
           --platform linux/amd64 \
           --build-arg VERSION=$VERSION \
-          --tag lukechilds/electrs:$VERSION-amd64 \
+          --tag ${{ github.actor }}/electrs:$VERSION \
           --output "type=registry" .
