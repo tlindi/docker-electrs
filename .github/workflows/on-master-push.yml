@@ -16,11 +16,13 @@ jobs:
       VERSION: v0.9.4
     steps:
       - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1  
+        uses: docker/build-push-action@v2
         with: 
           registry: ghcr.io 
           username: ${{ github.actor }} 
           password: ${{ secrets.GITHUB_TOKEN }}
+          secrets: |
+            GIT_AUTH_TOKEN=${{ github.token }}
 
       - name: Checkout project
         uses: actions/checkout@v2
