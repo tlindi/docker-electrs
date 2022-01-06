@@ -15,7 +15,7 @@ jobs:
     env:
       VERSION: v0.9.4
       REGISTRY: ghcr.io/
-      # REGISTRY= for Docker Hub
+      # REGISTRY: (empty) for Docker Hub, not tested
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/build-push-action@v2
