@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-18.04
     env:
       VERSION: v0.9.4
-      REGISTRY: ghcr.io/
-      # REGISTRY: (empty) for Docker Hub, not tested
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -45,5 +43,5 @@ jobs:
           docker buildx build \
           --platform linux/amd64,linux/arm64 \
           --build-arg VERSION=$VERSION \
-          --tag $REGISTRY${{ github.actor }}/electrs:$VERSION \
+          --tag ghcr.io/${{ github.actor }}/electrs:$VERSION \
           --output "type=registry" .
