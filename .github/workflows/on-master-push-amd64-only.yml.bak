@@ -1,4 +1,4 @@
-name: Build on master push
+name: Build on master push (amd64 only)
 
 on:
   push:
@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-18.04
     env:
       VERSION: v0.9.4
-      REGISTRY: ghcr.io
     steps:
       - name: Login to GitHub Container Registry
         uses: docker/build-push-action@v2
@@ -42,7 +41,7 @@ jobs:
       - name: Run Docker buildx
         run: |
           docker buildx build \
-          --platform linux/amd64,linux/arm64 \
+          --platform linux/amd64 \
           --build-arg VERSION=$VERSION \
-          --tag ghcr.io/${{ github.actor }}/electrs:$VERSION \
+          --tag ${{ github.actor }}/electrs:$VERSION \
           --output "type=registry" .
