@@ -1,4 +1,7 @@
 name: Build on master push (amd64 only)
+# see https://iam.thunder.spb.ru/posts/2021/01/09/github-actions-and-pushing-container-to-multiple-registries
+# 
+# https://linuxtut.com/en/b0291c1bc1141a535263/
 
 on:
   push:
@@ -19,7 +22,7 @@ jobs:
         uses: docker/build-push-action@v2
         with: 
           registry: ghcr.io 
-          username: ${{ github.actor }} 
+          username: ${{ github.repository_owner }} 
           password: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
             GITHUB_TOKEN=${{ github.token }}
@@ -38,10 +41,17 @@ jobs:
       - name: Show available Docker buildx platforms
         run: echo ${{ steps.buildx.outputs.platforms }}
 
-      - name: Run Docker buildx
-        run: |
-          docker buildx build \
-          --platform linux/amd64 \
-          --build-arg VERSION=$VERSION \
-          --tag ghcr.io/${{ github.actor }}/electrs:$VERSION \
-          --output "type=registry" .
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
+#      - name: Run Docker buildx
+#        run: |
+#          docker buildx build \
+#          --platform linux/amd64 \
+#          --build-arg VERSION=$VERSION \
+#          --tag ghcr.io/${{ github.actor }}/electrs:$VERSION \
+#          --output "type=registry" .

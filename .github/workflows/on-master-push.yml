@@ -1,4 +1,7 @@
 name: Build on master push
+# see https://iam.thunder.spb.ru/posts/2021/01/09/github-actions-and-pushing-container-to-multiple-registries
+# 
+# https://linuxtut.com/en/b0291c1bc1141a535263/
 
 on:
   push:
@@ -19,7 +22,7 @@ jobs:
         uses: docker/build-push-action@v2
         with: 
           registry: ghcr.io 
-          username: ${{ github.actor }} 
+          username: ${{ github.repository_owner }} 
           password: ${{ secrets.GITHUB_TOKEN }}
           secrets: |
             GITHUB_TOKEN=${{ github.token }}
